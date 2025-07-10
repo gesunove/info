@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio - Dynamic Content</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #6c5ce7;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(135deg, #5a67d8 0%, #9f7aea 100%);
+            border-radius: 50% 0 0 50%;
+            z-index: 1;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            color: white;
+        }
+
+        .hero-greeting {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .hero-image {
+            position: relative;
+            z-index: 3;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: white;
+            padding: 4rem 0;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6c5ce7;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            background: #6c5ce7;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .portfolio-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .portfolio-content {
+            padding: 2rem;
+        }
+
+        .portfolio-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .portfolio-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .portfolio-link {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .portfolio-link:hover {
+            color: #5a4fcf;
+        }
+
+        /* Blog Section */
+        .blog {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .blog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .blog-item {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .blog-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-date {
+            color: #6c5ce7;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .blog-excerpt {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-link {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details {
+            opacity: 0.9;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            font-size: 1.2rem;
+            color: #666;
+            flex-direction: column; /* Align spinner and text vertically */
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6c5ce7;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem; /* Space between spinner and text */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Debugging Info */
+        #debug-info {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            z-index: 9999;
+            display: none; /* Hidden by default, toggle with F8 or similar */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* You might want to implement a hamburger menu for mobile */
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" id="logo">PORTFOLIO</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="loading" id="hero-loading">
+                    <div class="spinner"></div>
+                    Loading content...
+                </div>
+                <div id="hero-content" style="display: none;">
+                    <p class="hero-greeting" id="hero-greeting">HEY THERE!</p>
+                    <h1 class="hero-title" id="hero-title">I AM JO BREED</h1>
+                    <p class="hero-subtitle" id="hero-subtitle">CREATIVE ART DIRECTOR & DESIGNER</p>
+                    <div class="social-links" id="social-links">
+                        <!-- Social links will be populated dynamically -->
+                    </div>
+                    <a href="#portfolio" class="cta-button" id="cta-button">SEE MY WORK</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img id="hero-image" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face" alt="Profile Picture">
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container" id="stats-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading stats...
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <div class="about-image">
+                <img id="about-image" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face" alt="About Picture">
+            </div>
+            <div class="about-content">
+                <div class="loading" id="about-loading">
+                    <div class="spinner"></div>
+                    Loading about content...
+                </div>
+                <div id="about-content" style="display: none;">
+                    <h2 class="section-title">ABOUT ME</h2>
+                    <p class="about-text" id="about-text">
+                        I'm a passionate creative professional with expertise in art direction and design.
+                    </p>
+                    <div class="skills" id="skills">
+                        <!-- Skills will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="portfolio-container">
+            <h2 class="section-title">MY PORTFOLIO</h2>
+            <div class="portfolio-grid" id="portfolio-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading portfolio...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="blog-container">
+            <h2 class="section-title">LATEST BLOG POSTS</h2>
+            <div class="blog-grid" id="blog-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading blog posts...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-container">
+            <h2 class="section-title">GET IN TOUCH</h2>
+            <div class="contact-info" id="contact-info">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading contact information...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Debugging Info -->
+    <div id="debug-info">
+        <p><strong>Google Apps Script URL:</strong> <span id="script-url-display"></span></p>
+        <p><strong>Fetch Status:</strong> <span id="fetch-status">Initializing...</span></p>
+    </div>
+
+    <script>
+        // Configuration - Replace with your Google Apps Script Web App URL
+        // IMPORTANT: After deploying your Google Apps Script as a web app,
+        // copy the provided URL and paste it here.
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4Zc2w5SXsawjx9Jnkn6lKPMACw39PwOi4re7WVmSMCO5kxcAPxodDW5v-kNC8a-1JrA/exec';
+        
+        // Function to display an error message
+        function displayErrorMessage(message, elementId) {
+            const targetElement = document.getElementById(elementId);
+            if (targetElement) {
+                targetElement.innerHTML = `<div class="error-message">${message}</div>`;
+                targetElement.style.display = 'block'; // Ensure it's visible
+            }
+        }
+
+        // Function to hide loading and show content
+        function showContent(loadingElementId, contentElementId) {
+            const loadingElement = document.getElementById(loadingElementId);
+            const contentElement = document.getElementById(contentElementId);
+            if (loadingElement) loadingElement.style.display = 'none';
+            if (contentElement) contentElement.style.display = 'block';
+        }
+
+        // Initialize the website
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('script-url-display').textContent = GOOGLE_SCRIPT_URL;
+            loadContent();
+        });
+
+        async function loadContent() {
+            const fetchStatusElement = document.getElementById('fetch-status');
+            fetchStatusElement.textContent = 'Fetching data...';
+            console.log('Attempting to load content from Google Apps Script at URL:', GOOGLE_SCRIPT_URL);
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                if (!response.ok) {
+                    const errorText = await response.text(); // Get raw text for more info
+                    console.error('HTTP error response:', response.status, response.statusText, errorText);
+                    fetchStatusElement.textContent = `Error: HTTP ${response.status}`;
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText.substring(0, 100)}...`);
+                }
+                const result = await response.json();
+                console.log('Raw data fetched successfully:', result); // Log raw result
+
+                if (result.success) {
+                    const data = result.data;
+                    fetchStatusElement.textContent = 'Data loaded successfully!';
+                    populateHome(data.home);
+                    populateAbout(data.about);
+                    populatePortfolio(data.portfolio);
+                    populateBlog(data.blog);
+                    populateContact(data.contact);
+                } else {
+                    console.error('Error from Google Apps Script (success: false):', result.error);
+                    fetchStatusElement.textContent = `Script Error: ${result.error}`;
+                    displayErrorMessage('Failed to load data: ' + result.error, 'hero-loading');
+                    displayErrorMessage('Failed to load stats.', 'stats-container');
+                    displayErrorMessage('Failed to load about content.', 'about-loading');
+                    displayErrorMessage('Failed to load portfolio.', 'portfolio-grid');
+                    displayErrorMessage('Failed to load blog posts.', 'blog-grid');
+                    displayErrorMessage('Failed to load contact information.', 'contact-info');
+                }
+            } catch (error) {
+                console.error('Error fetching data from Google Apps Script:', error);
+                fetchStatusElement.textContent = `Network Error: ${error.message}`;
+                displayErrorMessage('Network error or invalid URL. Please check the console for details. Error: ' + error.message, 'hero-loading');
+                displayErrorMessage('Failed to load stats.', 'stats-container');
+                displayErrorMessage('Failed to load about content.', 'about-loading');
+                displayErrorMessage('Failed to load portfolio.', 'portfolio-grid');
+                displayErrorMessage('Failed to load blog posts.', 'blog-grid');
+                displayErrorMessage('Failed to load contact information.', 'contact-info');
+            }
+        }
+
+        function populateHome(homeData) {
+            // Update hero content
+            document.getElementById('hero-greeting').textContent = homeData.greeting;
+            document.getElementById('hero-title').textContent = homeData.name;
+            document.getElementById('hero-subtitle').textContent = homeData.title;
+            document.getElementById('cta-button').textContent = homeData.ctaText;
+            document.getElementById('logo').textContent = homeData.name.split(' ')[0];
+
+            // Populate social links
+            const socialLinksContainer = document.getElementById('social-links');
+            socialLinksContainer.innerHTML = homeData.socialLinks.map(link => 
+                `<a href="${link.url}" target="_blank"><i class="${link.icon}"></i></a>`
+            ).join('');
+
+            // Show hero content
+            showContent('hero-loading', 'hero-content');
+
+            // Populate stats
+            const statsContainer = document.getElementById('stats-container');
+            statsContainer.innerHTML = homeData.stats.map(stat => 
+                `<div class="stat-item">
+                    <div class="stat-number">${stat.number}</div>
+                    <div class="stat-label">${stat.label}</div>
+                </div>`
+            ).join('');
+        }
+
+        function populateAbout(aboutData) {
+            document.getElementById('about-text').textContent = aboutData.bio;
+            document.getElementById('about-image').src = aboutData.photoUrl;
+
+            // Populate skills
+            const skillsContainer = document.getElementById('skills');
+            skillsContainer.innerHTML = aboutData.skills.map(skill => 
+                `<span class="skill-tag">${skill}</span>`
+            ).join('');
+
+            // Show about content
+            showContent('about-loading', 'about-content');
+        }
+
+        function populatePortfolio(portfolioData) {
+            const portfolioGrid = document.getElementById('portfolio-grid');
+            portfolioGrid.innerHTML = portfolioData.map(item => 
+                `<div class="portfolio-item">
+                    <img src="${item.imageUrl}" alt="${item.name}">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">${item.name}</h3>
+                        <p class="portfolio-description">${item.description}</p>
+                        <a href="${item.link}" class="portfolio-link">View Project →</a>
+                    </div>
+                </div>`
+            ).join('');
+        }
+
+        function populateBlog(blogData) {
+            const blogGrid = document.getElementById('blog-grid');
+            blogGrid.innerHTML = blogData.map(post => 
+                `<div class="blog-item">
+                    <div class="blog-date">${formatDate(post.date)}</div>
+                    <h3 class="blog-title">${post.title}</h3>
+                    <p class="blog-excerpt">${post.excerpt}</p>
+                    <a href="${post.url}" class="blog-link">Read More →</a>
+                </div>`
+            ).join('');
+        }
+
+        function populateContact(contactData) {
+            const contactInfo = document.getElementById('contact-info');
+            contactInfo.innerHTML = contactData.socialLinks.map(contact => 
+                `<div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="${contact.icon}"></i>
+                    </div>
+                    <div class="contact-title">${contact.platform}</div>
+                    <div class="contact-details">
+                        ${contact.platform === 'Email' ? contactData.email : 
+                          contact.platform === 'Phone' ? contactData.phone : 
+                          contactData.address}
+                    </div>
+                </div>`
+            ).join('');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
